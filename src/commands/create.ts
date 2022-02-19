@@ -1,11 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import os from 'os'
-import glob from 'glob'
 
 import type { Arguments, CommandBuilder } from 'yargs'
 
-import { parseMochiConfig, parseMochiTemplate } from '../utils/parser'
+import { parseMochiConfig, parseMochiTemplate, scanForTemplate } from '../utils/parser'
 import { prompt } from '../utils/prompt'
 import { TokenMap } from '../types/mochi'
 
@@ -34,21 +32,9 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     } else if (fs.existsSync(absoluteFilePath)) {
         location = absoluteFilePath
     } else {
-        const tmpDir = os.tmpdir()
-        const tmpDirPath = path.join(tmpDir, '.mochi')
-        const tmpDirExists = fs.existsSync(tmpDirPath)
+        const [_, loc] = scanForTemplate(template) ?? []
 
-        if (tmpDirExists) {
-            const tmpDirFiles = glob.sync(tmpDirPath.concat('**/*.mochi.mdx'))
-
-            for (const templateFile of tmpDirFiles) {
-                const parsedMochiConfig = parseMochiConfig(templateFile)
-
-                if (parsedMochiConfig.templateName === template) {
-                    location = templateFile
-                }
-            }
-        }
+        location = loc
     }
 
     if (location == null) {
@@ -78,12 +64,17 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     })
 
     try {
-        // write to file
-        const fileOutput = dest == null ? fileName : path.join(dest, fileName)
+        // update dest
+        if (dest && !fs.existsSync(dest)) {
+            // create dest dir
+            fs.mkdirSync(dest)
+        }
 
-        fs.writeFileSync(fileOutput, contents)
+        let output = path.join(dest ?? '', fileName)
 
-        console.log(`Created file ${fileOutput}`)
+        fs.writeFileSync(output, contents, { flag: 'a+' })
+
+        console.log(`Created file ${output}`)
     } catch (error) {
         console.log(error)
         process.exit(1)

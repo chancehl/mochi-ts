@@ -7,3 +7,5 @@ export type MochiConfiguration = {
 }
 
 export type TokenMap = Record<string, string>
+
+export type TemplateScanResults = [MochiConfiguration, string] | null

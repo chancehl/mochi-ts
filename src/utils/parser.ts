@@ -1,6 +1,9 @@
 import fs from 'fs'
+import path from 'path'
+import os from 'os'
+import glob from 'glob'
 
-import type { MochiConfiguration } from '../types/mochi'
+import type { MochiConfiguration, TemplateScanResults } from '../types/mochi'
 
 export const MOCHI_TEMPLATE_REGEX = /\s+`{3}json(.|\n)+`{3}/gm
 export const MOCHI_CONFIG_REGEX = /`{3}json(.|\n)+`{3}/gm
@@ -33,4 +36,30 @@ export const parseMochiConfig = (filePath: string): MochiConfiguration => {
  * @param filePath The path to the file to parse
  * @returns string
  */
-export const parseMochiTemplate = (filePath: string) => fs.readFileSync(filePath, { encoding: 'utf-8' }).replace(MOCHI_TEMPLATE_REGEX, '')
+export const parseMochiTemplate = (filePath: string): string => fs.readFileSync(filePath, { encoding: 'utf-8' }).replace(MOCHI_TEMPLATE_REGEX, '')
+
+/**
+ * Scans for a mochi template. If one exists with the given name, the config and the location are returned.
+ *
+ * @param templateName The name of the template to search for
+ * @returns
+ */
+export const scanForTemplate = (templateName: string): TemplateScanResults => {
+    const tmpDir = os.tmpdir()
+    const tmpDirPath = path.join(tmpDir, '.mochi')
+    const tmpDirExists = fs.existsSync(tmpDirPath)
+
+    if (tmpDirExists) {
+        const tmpDirFiles = glob.sync(tmpDirPath.concat('**/*.mochi.mdx'))
+
+        for (const templateFile of tmpDirFiles) {
+            const parsedMochiConfig = parseMochiConfig(templateFile)
+
+            if (parsedMochiConfig.templateName === templateName) {
+                return [parsedMochiConfig, templateFile]
+            }
+        }
+    }
+
+    return null
+}
