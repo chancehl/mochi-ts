@@ -5,8 +5,6 @@ import type { Arguments, CommandBuilder } from 'yargs'
 
 import { parseMochiConfig, parseMochiTemplate, scanForTemplate, prompt } from '../utils'
 
-import { TokenMap } from '../types/mochi'
-
 export type CreateOptions = { template: string; destination?: string }
 
 export const command: string = 'create [template]'
@@ -45,23 +43,17 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     const config = parseMochiConfig(location)
     let contents = parseMochiTemplate(location)
 
-    let fileName = config.fileName ?? 'mochifile.txt'
-    let tokenMap = {} as TokenMap
-
     for (const token of config.tokens) {
-        tokenMap[token] = await prompt(`${token}:`)
-    }
+        const resp = await prompt(`${token}:`)
 
-    // replace tokens
-    Object.keys(tokenMap).forEach((key) => {
         // replace contents
-        contents = contents.replaceAll(key, tokenMap[key])
+        contents = contents.replaceAll(token, resp)
 
         // if file name contains this key, update the fileName
-        if (fileName?.includes(key)) {
-            fileName = fileName.replaceAll(`[${key}]`, tokenMap[key])
+        if (config.fileName.includes(token)) {
+            config.fileName = config.fileName.replaceAll(`[${token}]`, resp)
         }
-    })
+    }
 
     try {
         // update dest
@@ -70,11 +62,11 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
             fs.mkdirSync(dest)
         }
 
-        let output = path.join(dest ?? '', fileName)
+        let output = path.join(dest ?? '', config.fileName)
 
-        fs.writeFileSync(output, contents, { flag: 'a+' })
+        fs.writeFileSync(output, contents)
 
-        console.log(`Created file ${output}`)
+        process.stdout.write(`Created file => ${output}`)
     } catch (error) {
         console.log(error)
         process.exit(1)
