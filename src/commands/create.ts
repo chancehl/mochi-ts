@@ -3,8 +3,8 @@ import path from 'path'
 
 import type { Arguments, CommandBuilder } from 'yargs'
 
-import { parseMochiConfig, parseMochiTemplate, scanForTemplate } from '../utils/parser'
-import { prompt } from '../utils/prompt'
+import { parseMochiConfig, parseMochiTemplate, scanForTemplate, prompt } from '../utils'
+
 import { TokenMap } from '../types/mochi'
 
 export type CreateOptions = { template: string; destination?: string }
