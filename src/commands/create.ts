@@ -1,9 +1,11 @@
 import fs from 'fs'
 import path from 'path'
+import chalk from 'chalk'
 
 import type { Arguments, CommandBuilder } from 'yargs'
 
 import { parseMochiConfig, parseMochiTemplate, scanForTemplate, prompt } from '../utils'
+import { HEXES } from '../constants'
 
 export type CreateOptions = { template: string; destination?: string }
 
@@ -40,17 +42,21 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         process.exit(1)
     }
 
+    // if we've made it here, we're good to greet the user and run mochi
+    console.log(chalk.hex(HEXES.mochi)(`Thank you for using Mochi 😍`))
+    console.log(chalk.hex(HEXES.mochi)(`Mochi will now prompt you to provide values for the tokens in your .mochi.mdx file.`))
+
     const config = parseMochiConfig(location)
     let contents = parseMochiTemplate(location)
 
     for (const token of config.tokens) {
-        const resp = await prompt(`${token}:`)
+        const resp = await prompt(chalk.hex(HEXES.mochi)(`${token} => `))
 
         // replace contents
         contents = contents.replaceAll(token, resp)
 
         // if file name contains this key, update the fileName
-        if (config.fileName.includes(token)) {
+        if (config.fileName.includes(token) && resp.length) {
             config.fileName = config.fileName.replaceAll(`[${token}]`, resp)
         }
     }

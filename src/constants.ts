@@ -12,3 +12,10 @@ export const MOCHI_CONFIG_REGEX = /`{3}json(.|\n)+`{3}/gm
  * This regex parses the backticks for the code block out of a .mdx file
  */
 export const BACKTICKS_REGEX = /`{3}(json)?/gm
+
+/**
+ * Color hexes for chalk
+ */
+export const HEXES = {
+    mochi: '#98FF98',
+}
