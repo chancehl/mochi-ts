@@ -6,7 +6,7 @@ const readlineInterface = readline.createInterface({
 })
 
 export const prompt = async (message: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         readlineInterface.question(message, (answer: string) => {
             resolve(answer)
         })
