@@ -5,9 +5,7 @@ import glob from 'glob'
 
 import type { MochiConfiguration, TemplateScanResults } from '../types/mochi'
 
-export const MOCHI_TEMPLATE_REGEX = /\s+`{3}json(.|\n)+`{3}/gm
-export const MOCHI_CONFIG_REGEX = /`{3}json(.|\n)+`{3}/gm
-export const BACKTICKS_REGEX = /`{3}(json)?/gm
+import { BACKTICKS_REGEX, MOCHI_CONFIG_REGEX, MOCHI_TEMPLATE_REGEX } from '../constants'
 
 /**
  * Parses and returns a mochi configuration object from a specified file path
