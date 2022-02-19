@@ -56,9 +56,8 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     }
 
     try {
-        // update dest
+        // if dest was provided and it doesn't already exist, create that dir
         if (dest && !fs.existsSync(dest)) {
-            // create dest dir
             fs.mkdirSync(dest)
         }
 
@@ -66,9 +65,10 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
         fs.writeFileSync(output, contents)
 
-        process.stdout.write(`Created file => ${output}`)
-    } catch (error) {
-        console.log(error)
+        process.stdout.write(`Created file => ${output}\n`)
+        process.exit(0)
+    } catch (error: any) {
+        process.stderr.write(error.message)
         process.exit(1)
     }
 
