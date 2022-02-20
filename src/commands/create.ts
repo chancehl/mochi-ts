@@ -77,6 +77,4 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         console.log(error.message)
         process.exit(1)
     }
-
-    process.exit(0)
 }
