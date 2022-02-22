@@ -10,7 +10,7 @@ class ReadLineInterfaceSingleton {
 
     private constructor() {}
 
-    public static getInstance = (options?: ReadLineOptions) => {
+    public static getInterface = (options?: ReadLineOptions) => {
         if (this.interface == null) {
             this.interface = createInterface({
                 input: options?.input ?? process.stdin,
@@ -30,7 +30,7 @@ class ReadLineInterfaceSingleton {
  * @returns
  */
 export const prompt = async (message: string, options?: ReadLineOptions): Promise<string> => {
-    const readlineInterface = ReadLineInterfaceSingleton.getInstance(options)
+    const readlineInterface = ReadLineInterfaceSingleton.getInterface(options)
 
     return new Promise((resolve) => {
         readlineInterface.question(message, (answer: string) => {
