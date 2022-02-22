@@ -44,13 +44,13 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
     // if we've made it here, we're good to greet the user and run mochi
     console.log(`Thank you for using ${chalk.hex(HEXES.mochi).bold('Mochi')} 😍`)
-    console.log(`Mochi will now prompt you to provide values for the tokens in your ${chalk.bold('.mochi.mdx')} file`)
+    console.log(`Mochi will now prompt you to provide values for the tokens in your ${chalk.bold('.mochi.mdx')} file\n`)
 
     const config = parseMochiConfig(location)
     let contents = parseMochiTemplate(location)
 
     for (const token of config.tokens) {
-        const resp = await prompt(chalk.bold.underline(`${token}`) + ' => ')
+        const resp = await prompt(`${chalk.hex(HEXES.mochi)(token)} => `)
 
         // replace contents
         contents = contents.replaceAll(token, resp)
@@ -71,7 +71,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
         fs.writeFileSync(output, contents)
 
-        console.log('🥳', chalk.hex(HEXES.mochi).bold(output))
+        console.log(`\nWoohoo! I just created ${chalk.hex(HEXES.mochi).bold(output)} for you 🥳`)
         process.exit(0)
     } catch (error: any) {
         console.log(error.message)
