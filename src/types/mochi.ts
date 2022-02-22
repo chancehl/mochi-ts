@@ -4,6 +4,14 @@ export type MochiConfiguration = {
     fileName: string
     include?: string[]
     destination?: string
+    location?: string
+}
+
+export type AggregateMochiConfiguration = {
+    compositeId: string
+    configs: MochiConfiguration[]
+    tokens: string[]
+    map: Record<string, string[]>
 }
 
 export type TemplateScanResults = [MochiConfiguration, string] | null

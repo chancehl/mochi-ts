@@ -1,10 +1,36 @@
-import readline from 'readline'
+import { Interface as ReadLineInterface, ReadLineOptions, createInterface } from 'readline'
 
-export const prompt = async (message: string, options?: readline.ReadLineOptions): Promise<string> => {
-    const readlineInterface = readline.createInterface({
-        input: options?.input ?? process.stdin,
-        output: options?.output ?? process.stdout,
-    })
+/**
+ * Singleton wrapper around the readline class.
+ *
+ * More information on why this is necessary here: https://stackoverflow.com/questions/30174078/how-to-define-singleton-in-typescript
+ */
+class ReadLineInterfaceSingleton {
+    private static interface: ReadLineInterface
+
+    private constructor() {}
+
+    public static getInstance = (options?: ReadLineOptions) => {
+        if (this.interface == null) {
+            this.interface = createInterface({
+                input: options?.input ?? process.stdin,
+                output: options?.output ?? process.stdout,
+            })
+        }
+
+        return this.interface
+    }
+}
+
+/**
+ * Prompts the user for input
+ *
+ * @param message The message to prompt for
+ * @param options ReadLineOptions object
+ * @returns
+ */
+export const prompt = async (message: string, options?: ReadLineOptions): Promise<string> => {
+    const readlineInterface = ReadLineInterfaceSingleton.getInstance(options)
 
     return new Promise((resolve) => {
         readlineInterface.question(message, (answer: string) => {

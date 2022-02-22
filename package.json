@@ -11,8 +11,9 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./dist && rm -rf ./test/tmp",
+        "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
         "test": "jest",
-        "release": "npm run clean && npm run build && npm run test && echo Build Succeeded 👍"
+        "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍"
     },
     "keywords": [],
     "author": "Chance Linz <clinz.dev@gmail.com>",
