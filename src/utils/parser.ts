@@ -79,7 +79,6 @@ export const aggregateMochiConfigs = (
     config: MochiConfiguration,
     aggregateConfig: AggregateMochiConfiguration = { compositeId: '', configs: [], map: {}, tokens: [] },
 ): AggregateMochiConfiguration => {
-    console.log('aggregateMochiConfig called with config', config)
     let included = (config.include ?? []).filter((conf) => !Object.keys(aggregateConfig.map).includes(conf))
 
     if (aggregateConfig.map[config.templateName]) {

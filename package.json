@@ -7,13 +7,18 @@
         "dist"
     ],
     "type": "commonjs",
+    "bin": {
+        "mochi": "./dist/cli.js"
+    },
     "scripts": {
         "build": "tsc",
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./dist && rm -rf ./test/tmp",
         "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
+        "install:local": "npm install -g .",
         "test": "jest",
-        "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍"
+        "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍",
+        "uninstall:local": "npm uninstall -g @mochi/cli"
     },
     "keywords": [],
     "author": "Chance Linz <clinz.dev@gmail.com>",
