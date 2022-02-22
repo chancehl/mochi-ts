@@ -11,9 +11,8 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./dist && rm -rf ./test/tmp",
-        "inform:build_succeeded": "echo \"\\e[1;40m Build Succeeded 👍 \\e[0m\"",
         "test": "jest",
-        "release": "npm run clean && npm run build && npm run test && npm run inform:build_succeeded"
+        "release": "npm run clean && npm run build && npm run test && echo Build Succeeded 👍"
     },
     "keywords": [],
     "author": "Chance Linz <clinz.dev@gmail.com>",
