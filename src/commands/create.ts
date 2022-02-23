@@ -43,13 +43,15 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         process.exit(1)
     }
 
-    // if we've made it here, we're good to greet the user and run mochi
-    console.log(`Mochi will now prompt you to provide values for the tokens in your ${chalk.bold('.mochi.mdx')} file\n`)
-
     // parse the initial config from the CLI and then feed this into the aggregate function
     const aggregatedConfig = aggregateMochiConfigs({ ...parseMochiConfig(location), location })
 
-    // console.log({ aggregatedConfig })
+    // if we've made it here, we're good to greet the user and run mochi
+    console.log(
+        `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s): ${aggregatedConfig.tokens
+            .map((token) => `${chalk.hex(HEXES.mochi).bold(token)}`)
+            .join(', ')}\n`,
+    )
 
     for (const config of aggregatedConfig.configs) {
         // if we've got this far and we don't have a location, we're in an error state
@@ -88,7 +90,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         }
     }
 
-    console.log(`\n(${chalk.hex(HEXES.mochi)('Success')}) The following files were created from this operation:\n`)
+    console.log(`\n🥳 ${chalk.hex(HEXES.mochi)('Success!')} The following files were created from this operation:\n`)
     console.log(`${filesCreated.map((file) => `* ${chalk.hex(HEXES.mochi).bold(file)}`).join('\n')}`)
     console.log(`\nThank you for using ${chalk.hex(HEXES.mochi).bold('@mochi/cli')} 😍`)
     process.exit(0)
