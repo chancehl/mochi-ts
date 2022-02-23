@@ -46,13 +46,16 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     // parse the initial config from the CLI and then feed this into the aggregate function
     const aggregatedConfig = aggregateMochiConfigs({ ...parseMochiConfig(location), location })
 
-    // if we've made it here, we're good to greet the user and run mochi
-    console.log(
-        `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s): ${aggregatedConfig.tokens
-            .map((token) => `${chalk.hex(HEXES.mochi).bold(token)}`)
-            .join(', ')}\n`,
-    )
+    // Only tell teh user we're going to prompt them if we actually have something to prompt for
+    if (aggregatedConfig.tokens.length) {
+        console.log(
+            `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s): ${aggregatedConfig.tokens
+                .map((token) => `${chalk.hex(HEXES.mochi).bold(token)}`)
+                .join(', ')}\n`,
+        )
+    }
 
+    // if we've made it here, we're good to greet the user and run mochi
     for (const config of aggregatedConfig.configs) {
         // if we've got this far and we don't have a location, we're in an error state
         if (config.location == null) {
@@ -61,7 +64,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
         let contents = parseMochiTemplate(config.location)
 
-        for (const token of config.tokens) {
+        for (const token of config?.tokens ?? []) {
             const resp = await prompt(`${chalk.hex(HEXES.mochi)(token)} => `)
 
             // replace contents

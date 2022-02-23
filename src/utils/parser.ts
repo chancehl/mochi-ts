@@ -110,10 +110,14 @@ export const aggregateMochiConfigs = (
  * @param aggregateConfig The aggregate config which will have `config` merged into it
  * @returns
  */
-export const mergeConfigIntoAggregate = (config: MochiConfiguration, aggregateConfig: AggregateMochiConfiguration) => ({
-    ...aggregateConfig,
-    compositeId: aggregateConfig.compositeId.length ? `${aggregateConfig.compositeId}:${config.templateName}` : config.templateName,
-    configs: [...aggregateConfig.configs, config],
-    tokens: [...aggregateConfig.tokens, ...config.tokens],
-    map: { ...aggregateConfig.map, [config.templateName]: [...config.tokens] },
-})
+export const mergeConfigIntoAggregate = (config: MochiConfiguration, aggregateConfig: AggregateMochiConfiguration) => {
+    const tokens = config.tokens ?? []
+
+    return {
+        ...aggregateConfig,
+        compositeId: aggregateConfig.compositeId.length ? `${aggregateConfig.compositeId}:${config.templateName}` : config.templateName,
+        configs: [...aggregateConfig.configs, config],
+        tokens: [...aggregateConfig.tokens, ...tokens],
+        map: { ...aggregateConfig.map, [config.templateName]: [...tokens] },
+    }
+}
