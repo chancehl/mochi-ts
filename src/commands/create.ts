@@ -46,7 +46,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     // parse the initial config from the CLI and then feed this into the aggregate function
     const aggregatedConfig = aggregateMochiConfigs({ ...parseMochiConfig(location), location })
 
-    // Only tell teh user we're going to prompt them if we actually have something to prompt for
+    // Only tell the user we're going to prompt them if we actually have something to prompt for
     if (aggregatedConfig.tokens.length) {
         console.log(
             `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s): ${aggregatedConfig.tokens
