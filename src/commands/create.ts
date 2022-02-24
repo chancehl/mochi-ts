@@ -4,7 +4,8 @@ import chalk from 'chalk'
 
 import type { Arguments, CommandBuilder } from 'yargs'
 
-import { parseMochiConfig, parseMochiTemplate, scanForTemplate, prompt, aggregateMochiConfigs } from '../utils'
+import { TemplateService } from '../services/templateService'
+import { prompt } from '../utils/prompt'
 import { HEXES } from '../constants'
 
 export type CreateOptions = { template: string; destination?: string }
@@ -17,6 +18,8 @@ export const builder: CommandBuilder<CreateOptions, CreateOptions> = (yargs) =>
     yargs
         .option('template', { type: 'string', alias: 't', demandOption: true })
         .option('destination', { type: 'string', alias: 'd' })
+
+const { aggregateMochiConfigs, mergeConfigIntoAggregate, parseMochiConfig, parseMochiTemplate, scanForTemplate } = new TemplateService()
 
 export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => {
     const { template, destination } = argv
@@ -44,7 +47,13 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     }
 
     // parse the initial config from the CLI and then feed this into the aggregate function
-    const aggregatedConfig = aggregateMochiConfigs({ ...parseMochiConfig(location), location })
+    const initialConfig = parseMochiConfig(location)
+
+    if (initialConfig == null) {
+        throw new Error(`Could not locate mochi configuration at ${location}`)
+    }
+
+    const aggregatedConfig = aggregateMochiConfigs({ ...initialConfig, location })
 
     // Only tell the user we're going to prompt them if we actually have something to prompt for
     if (aggregatedConfig.tokens.length) {

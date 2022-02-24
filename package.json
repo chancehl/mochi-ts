@@ -16,7 +16,7 @@
         "clean": "rm -rf ./dist && rm -rf ./test/tmp",
         "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
         "install:local": "npm run uninstall:local && npm run release && npm install -g .",
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍",
         "uninstall:local": "npm uninstall -g @mochi/cli"
     },
