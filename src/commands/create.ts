@@ -19,7 +19,7 @@ export const builder: CommandBuilder<CreateOptions, CreateOptions> = (yargs) =>
         .option('template', { type: 'string', alias: 't', demandOption: true })
         .option('destination', { type: 'string', alias: 'd' })
 
-const { aggregateMochiConfigs, mergeConfigIntoAggregate, parseMochiConfig, parseMochiTemplate, scanForTemplate } = new TemplateService()
+const { aggregateMochiConfigs, parseMochiConfig, parseMochiTemplate, scanForTemplate } = new TemplateService()
 
 export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => {
     const { template, destination } = argv
