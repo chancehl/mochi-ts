@@ -13,7 +13,7 @@ const MOCK_FILE_NAME = 'test-file.js'
 const MOCK_VALID_MOCHI_CONFIG = `
     import React from 'react';
     
-    exportconst MyReactComponent = () => <div>Hello, world!</div>
+    export const MyReactComponent = () => <div>Hello, world!</div>
 
     \`\`\`json
     {
