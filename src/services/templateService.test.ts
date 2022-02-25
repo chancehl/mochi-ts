@@ -9,14 +9,9 @@ jest.mock('fs')
 jest.mock('os')
 jest.mock('glob')
 
-// mock template service for the nested calls so we can isolate
-// template service functional calls
-// jest.mock('./templateService')
-
 const MOCK_FS = fs as jest.Mocked<typeof fs>
 const MOCK_OS = os as jest.Mocked<typeof os>
 const MOCK_GLOB = glob as jest.Mocked<typeof glob>
-// const MOCK_TEMPLATE_SERVICE = TemplateService as jest.Mocked<typeof TemplateService>
 
 const MOCK_MOCHI_TEMPLATE_FILE = 'ReactComponent.mochi.mdx'
 const MOCK_TEMPLATE_LOCATION = '/test'
