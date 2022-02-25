@@ -1,7 +1,7 @@
 import { default as fileSystem } from 'fs'
 import { default as operatingSystem } from 'os'
 import { default as glob } from 'glob'
-import path from 'path'
+import { default as path } from 'path'
 
 import type { AggregateMochiConfiguration, MochiConfiguration, TemplateScanResults } from '../types/mochi'
 
