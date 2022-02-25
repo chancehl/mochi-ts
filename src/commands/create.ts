@@ -19,7 +19,7 @@ export const builder: CommandBuilder<CreateOptions, CreateOptions> = (yargs) =>
         .option('template', { type: 'string', alias: 't', demandOption: true })
         .option('destination', { type: 'string', alias: 'd' })
 
-const { aggregateMochiConfigs, parseMochiConfig, parseMochiTemplate, scanForTemplate } = new TemplateService()
+const { aggregateMochiConfigs, parseMochiConfig, scanForTemplate } = new TemplateService()
 
 export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => {
     const { template, destination } = argv
@@ -71,13 +71,11 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
             throw new Error(`Encountered an invalid configuration ${config.templateName} (missing location from aggregate).`)
         }
 
-        let contents = parseMochiTemplate(config.location)
-
         for (const token of config?.tokens ?? []) {
             const resp = await prompt(`${chalk.hex(HEXES.mochi)(token)} => `)
 
             // replace contents
-            contents = contents.replaceAll(token, resp)
+            config.template = config.template.replaceAll(token, resp)
 
             // if file name contains this key, update the fileName
             if (config.fileName.includes(token) && resp.length) {
@@ -93,7 +91,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
             let output = path.join(dest ?? '', config.fileName)
 
-            fs.writeFileSync(output, contents)
+            fs.writeFileSync(output, config.template)
 
             filesCreated.push(output)
         } catch (error: any) {

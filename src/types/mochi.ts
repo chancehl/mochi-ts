@@ -5,6 +5,7 @@ export type MochiConfiguration = {
     include?: string[]
     destination?: string
     location?: string
+    template: string
 }
 
 export type AggregateMochiConfiguration = {

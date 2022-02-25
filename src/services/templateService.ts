@@ -34,18 +34,12 @@ export class TemplateService {
         }
 
         const sanitizedRawMochiConfig = rawMochiConfig.replace(BACKTICKS_REGEX, '')
-        const mochiConfig = JSON.parse(sanitizedRawMochiConfig)
+        const mochiConfig = JSON.parse(sanitizedRawMochiConfig) as MochiConfiguration
+
+        mochiConfig.template = contents.replace(MOCHI_TEMPLATE_REGEX, '')
 
         return mochiConfig
     }
-
-    /**
-     * Parses the mochi template
-     *
-     * @param filePath The path to the file to parse
-     * @returns string
-     */
-    public parseMochiTemplate = (filePath: string): string => this.fs.readFileSync(filePath, { encoding: 'utf-8' }).replace(MOCHI_TEMPLATE_REGEX, '')
 
     /**
      * Scans for a mochi template. If one exists with the given name, the config and the location are returned.

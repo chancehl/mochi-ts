@@ -56,16 +56,6 @@ describe('template service', () => {
         })
     })
 
-    describe('parseMochiTemplate', () => {
-        test('throws if the provided file path does not exist', () => {
-            expect(1).toEqual(1)
-        })
-
-        test('correctly removes the json code block from the template', () => {
-            expect(1).toEqual(1)
-        })
-    })
-
     describe('scanForTemplate', () => {
         test(`returns null of the template can't be found`, () => {
             expect(1).toEqual(1)
