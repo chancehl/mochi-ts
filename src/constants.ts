@@ -19,3 +19,8 @@ export const BACKTICKS_REGEX = /`{3}(json)?/gm
 export const HEXES = {
     mochi: '#98FF98',
 }
+
+/**
+ * This glob represents what we expect to be living in tmp dir
+ */
+export const MOCHI_TEMPLATE_FILE_GLOB = '**/*.mochi.mdx'

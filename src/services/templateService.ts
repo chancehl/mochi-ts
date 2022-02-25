@@ -1,17 +1,21 @@
 import { default as fileSystem } from 'fs'
+import { default as operatingSystem } from 'os'
+import { default as glob } from 'glob'
 import path from 'path'
-import os from 'os'
-import glob from 'glob'
 
 import type { AggregateMochiConfiguration, MochiConfiguration, TemplateScanResults } from '../types/mochi'
 
-import { BACKTICKS_REGEX, MOCHI_CONFIG_REGEX, MOCHI_TEMPLATE_REGEX } from '../constants'
+import { BACKTICKS_REGEX, MOCHI_CONFIG_REGEX, MOCHI_TEMPLATE_REGEX, MOCHI_TEMPLATE_FILE_GLOB } from '../constants'
 
 export class TemplateService {
     private fs: typeof fileSystem
+    private os: typeof operatingSystem
+    private glob: typeof glob
 
-    public constructor(options?: { fs?: typeof fileSystem }) {
+    public constructor(options?: { fs?: typeof fileSystem; os?: typeof operatingSystem; glob?: typeof glob }) {
         this.fs = options?.fs ?? fileSystem
+        this.os = options?.os ?? operatingSystem
+        this.glob = options?.glob ?? glob
     }
 
     /**
@@ -47,8 +51,8 @@ export class TemplateService {
      * @param templateName The name of the template to search for
      * @returns
      */
-    public scanForTemplate = (templateName: string): TemplateScanResults => {
-        const tmpDir = os.tmpdir()
+    public scanForTemplate = (templateName: string): TemplateScanResults | null => {
+        const tmpDir = this.os.tmpdir()
         const tmpDirPath = path.join(tmpDir, '.mochi')
         const tmpDirExists = this.fs.existsSync(tmpDirPath)
 
@@ -60,7 +64,7 @@ export class TemplateService {
             return null
         }
 
-        const tmpDirFiles = glob.sync(tmpDirPath.concat('**/*.mochi.mdx'))
+        const tmpDirFiles = this.glob.sync(tmpDirPath.concat(MOCHI_TEMPLATE_FILE_GLOB))
 
         for (const templateFile of tmpDirFiles) {
             const parsedMochiConfig = this.parseMochiConfig(templateFile)

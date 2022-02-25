@@ -15,4 +15,4 @@ export type AggregateMochiConfiguration = {
     map: Record<string, string[]>
 }
 
-export type TemplateScanResults = [MochiConfiguration, string] | null
+export type TemplateScanResults = [MochiConfiguration, string]

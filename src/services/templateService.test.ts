@@ -1,16 +1,28 @@
 import fs from 'fs'
+import os from 'os'
+import glob from 'glob'
 
 import { TemplateService } from './templateService'
 
-// mock fs
+// mock node internals
 jest.mock('fs')
+jest.mock('os')
+jest.mock('glob')
+
+// mock template service for the nested calls so we can isolate
+// template service functional calls
+// jest.mock('./templateService')
 
 const MOCK_FS = fs as jest.Mocked<typeof fs>
+const MOCK_OS = os as jest.Mocked<typeof os>
+const MOCK_GLOB = glob as jest.Mocked<typeof glob>
+// const MOCK_TEMPLATE_SERVICE = TemplateService as jest.Mocked<typeof TemplateService>
 
+const MOCK_MOCHI_TEMPLATE_FILE = 'ReactComponent.mochi.mdx'
 const MOCK_TEMPLATE_LOCATION = '/test'
 const MOCK_TEMPLATE_NAME = 'ReactComponent'
 const MOCK_FILE_NAME = 'test-file.js'
-const MOCK_VALID_MOCHI_CONFIG = `
+const MOCK_VALID_MOCHI_CONFIG_FILE_CONTENTS = `
     import React from 'react';
     
     export const MyReactComponent = () => <div>Hello, world!</div>
@@ -22,9 +34,14 @@ const MOCK_VALID_MOCHI_CONFIG = `
     }
     \`\`\`
 `
+const MOCK_VALID_MOCHI_CONFIG = { templateName: MOCK_TEMPLATE_NAME, fileName: MOCK_FILE_NAME }
 
 describe('template service', () => {
-    const templateService = new TemplateService({ fs: MOCK_FS })
+    const templateService = new TemplateService({
+        fs: MOCK_FS,
+        os: MOCK_OS,
+        glob: MOCK_GLOB,
+    })
 
     beforeEach(() => jest.resetAllMocks())
 
@@ -46,7 +63,7 @@ describe('template service', () => {
         })
 
         test('correctly parses a mochi config', () => {
-            MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG)
+            MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG_FILE_CONTENTS)
 
             const config = templateService.parseMochiConfig(MOCK_TEMPLATE_LOCATION)
 
@@ -58,15 +75,24 @@ describe('template service', () => {
 
     describe('scanForTemplate', () => {
         test(`returns null of the template can't be found`, () => {
-            expect(1).toEqual(1)
+            MOCK_OS.tmpdir = jest.fn().mockImplementationOnce(() => '/tmp')
+            MOCK_FS.existsSync = jest.fn().mockImplementationOnce((_: string) => false)
+
+            expect(templateService.scanForTemplate(MOCK_TEMPLATE_NAME)).toEqual(null)
         })
 
         test('returns a tuple containing the config and the file location if found', () => {
-            expect(1).toEqual(1)
-        })
+            MOCK_OS.tmpdir = jest.fn().mockImplementationOnce(() => '/tmp')
+            MOCK_FS.existsSync = jest.fn().mockImplementationOnce((_: string) => true)
+            MOCK_GLOB.sync = jest.fn().mockImplementationOnce(() => [MOCK_MOCHI_TEMPLATE_FILE])
 
-        test('does not include non .mochi.mdx files even if they are valid mochi config files', () => {
-            expect(1).toEqual(1)
+            templateService.parseMochiConfig = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG)
+
+            const result = templateService.scanForTemplate(MOCK_TEMPLATE_NAME)
+            const [config, loc] = result!
+
+            expect(config).toEqual(MOCK_VALID_MOCHI_CONFIG)
+            expect(loc).toEqual(MOCK_MOCHI_TEMPLATE_FILE)
         })
     })
 })
