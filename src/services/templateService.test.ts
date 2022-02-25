@@ -84,6 +84,8 @@ describe('template service', () => {
             templateService.parseMochiConfig = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG)
 
             const result = templateService.scanForTemplate(MOCK_TEMPLATE_NAME)
+            
+            // it is safe to use the non-null assertion operator (!) because we're mocking the return value above. we know it won't be null.
             const [config, loc] = result!
 
             expect(config).toEqual(MOCK_VALID_MOCHI_CONFIG)
