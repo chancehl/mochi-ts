@@ -43,5 +43,8 @@
         "modulePathIgnorePatterns": [
             "<rootDir>/dist/"
         ]
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
