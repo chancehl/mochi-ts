@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
+import pkg from '../../package.json'
 
 import type { Arguments, CommandBuilder } from 'yargs'
 
@@ -102,6 +103,6 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
     console.log(`\n🥳 ${chalk.hex(HEXES.mochi)('Success!')} The following files were created from this operation:\n`)
     console.log(`${filesCreated.map((file) => `* ${chalk.hex(HEXES.mochi).bold(file)}`).join('\n')}`)
-    console.log(`\nThank you for using ${chalk.hex(HEXES.mochi).bold('@mochi/cli')} 😍`)
+    console.log(`\nThank you for using ${chalk.hex(HEXES.mochi).bold(pkg.name)} 😍`)
     process.exit(0)
 }
