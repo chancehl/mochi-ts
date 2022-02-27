@@ -20,7 +20,7 @@
         "test:integ": "jest --testPathPattern=src/test/integ",
         "test": "npm run test:unit && npm run test:integ && echo Tests passed 🧪",
         "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍",
-        "uninstall:local": "npm uninstall -g @mochi/cli"
+        "uninstall:local": "npm uninstall -g mochi-cli"
     },
     "keywords": [],
     "author": "Chance Linz <clinz.dev@gmail.com>",
