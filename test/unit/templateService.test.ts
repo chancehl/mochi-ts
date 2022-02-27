@@ -44,17 +44,17 @@ describe('template service', () => {
         test('throws error if the provided file path does not exist', () => {
             MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => null)
 
-            expect(() => {
-                templateService.save(MOCK_TEMPLATE_LOCATION)
-            }).toThrowError(/Could not read mochi template/)
+            expect(async () => {
+                await templateService.save(MOCK_TEMPLATE_LOCATION)
+            }).rejects.toThrowError(/Could not read mochi template/)
         })
 
         test('throws if the provided file does not contain a mochi config', () => {
             MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => `I am not a valid mochi configuration`)
 
-            expect(() => {
-                templateService.save(MOCK_TEMPLATE_LOCATION) // this is invoked with an invalid file path, but since we're mocking the return value above, it doesn't matter
-            }).toThrowError(/Could not find mochi configuration/)
+            expect(async () => {
+                await templateService.save(MOCK_TEMPLATE_LOCATION) // this is invoked with an invalid file path, but since we're mocking the return value above, it doesn't matter
+            }).rejects.toThrowError(/Could not find mochi configuration/)
         })
     })
 

@@ -97,7 +97,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         }
     }
 
-    reportCreateSuccess(filesCreated)
+    reportCreateSuccess(filesCreated, aggregatedConfig)
 
     process.exit(0)
 }

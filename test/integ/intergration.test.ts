@@ -39,7 +39,6 @@ describe('integration', () => {
             // expect(result.toString()).toContain(STRINGS.create.filesCreated)
             // expect(result.toString()).toContain(STRINGS.create.thankYou)
             expect(result.toString()).toContain('Success!')
-            expect(result.toString()).toContain('The following files were created')
             expect(result.toString()).toContain('Thank you')
         })
     })
