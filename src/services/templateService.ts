@@ -24,7 +24,7 @@ export class TemplateService {
      * @param filePath The file path of the configuration
      * @returns MochiConfiguration
      */
-    public parseMochiConfig = (filePath: string): MochiConfiguration => {
+    public parse = (filePath: string): MochiConfiguration => {
         const contents = this.fs.readFileSync(filePath, { encoding: 'utf-8' })
 
         if (contents == null) {
@@ -51,7 +51,7 @@ export class TemplateService {
      * @param templateName The name of the template to search for
      * @returns
      */
-    public scanForTemplate = (templateName: string): TemplateScanResults | null => {
+    public scan = (templateName: string): TemplateScanResults | null => {
         const tmpDir = this.os.tmpdir()
         const tmpDirPath = path.join(tmpDir, '.mochi')
         const tmpDirExists = this.fs.existsSync(tmpDirPath)
@@ -67,7 +67,7 @@ export class TemplateService {
         const tmpDirFiles = this.glob.sync(tmpDirPath.concat(MOCHI_TEMPLATE_FILE_GLOB))
 
         for (const templateFile of tmpDirFiles) {
-            const parsedMochiConfig = this.parseMochiConfig(templateFile)
+            const parsedMochiConfig = this.parse(templateFile)
 
             if (parsedMochiConfig?.templateName === templateName) {
                 return [parsedMochiConfig, templateFile]
@@ -84,7 +84,7 @@ export class TemplateService {
      * @param aggregateConfig The aggregate thusfar
      * @returns
      */
-    public aggregateMochiConfigs = (
+    public aggregate = (
         config: MochiConfiguration,
         aggregateConfig: AggregateMochiConfiguration = { compositeId: '', configs: [], map: {}, tokens: [] },
     ): AggregateMochiConfiguration => {
@@ -95,10 +95,10 @@ export class TemplateService {
         }
 
         // always push the current config
-        aggregateConfig = this.mergeConfigIntoAggregate(config, aggregateConfig)
+        aggregateConfig = this.merge(config, aggregateConfig)
 
         for (const templateName of included) {
-            const template = this.scanForTemplate(templateName)
+            const template = this.scan(templateName)
 
             if (template == null) {
                 throw new Error(`Missing template ${templateName} found in ${config.templateName} or its dependencies`)
@@ -106,7 +106,7 @@ export class TemplateService {
 
             const [childConfiguration, location] = template
 
-            return this.aggregateMochiConfigs({ ...childConfiguration, location }, aggregateConfig)
+            return this.aggregate({ ...childConfiguration, location }, aggregateConfig)
         }
 
         return aggregateConfig
@@ -119,7 +119,7 @@ export class TemplateService {
      * @param aggregateConfig The aggregate config which will have `config` merged into it
      * @returns
      */
-    private mergeConfigIntoAggregate = (config: MochiConfiguration, aggregateConfig: AggregateMochiConfiguration) => {
+    private merge = (config: MochiConfiguration, aggregateConfig: AggregateMochiConfiguration) => {
         const tokens = config.tokens ?? []
 
         return {

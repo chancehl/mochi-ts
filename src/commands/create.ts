@@ -20,9 +20,9 @@ export const builder: CommandBuilder<CreateOptions, CreateOptions> = (yargs) =>
         .option('template', { type: 'string', alias: 't', demandOption: true })
         .option('destination', { type: 'string', alias: 'd' })
 
-const { aggregateMochiConfigs, parseMochiConfig, scanForTemplate } = new TemplateService()
-
 export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => {
+    const templateService = new TemplateService()
+
     const { template, destination } = argv
 
     const relativeFilePath = path.join(__dirname, template)
@@ -37,7 +37,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     } else if (fs.existsSync(absoluteFilePath)) {
         location = absoluteFilePath
     } else {
-        const [_, loc] = scanForTemplate(template) ?? []
+        const [_, loc] = templateService.scan(template) ?? []
 
         location = loc
     }
@@ -48,13 +48,13 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
     }
 
     // parse the initial config from the CLI and then feed this into the aggregate function
-    const initialConfig = parseMochiConfig(location)
+    const initialConfig = templateService.parse(location)
 
     if (initialConfig == null) {
         throw new Error(`Could not locate mochi configuration at ${location}`)
     }
 
-    const aggregatedConfig = aggregateMochiConfigs({ ...initialConfig, location })
+    const aggregatedConfig = templateService.aggregate({ ...initialConfig, location })
 
     // Only tell the user we're going to prompt them if we actually have something to prompt for
     if (aggregatedConfig.tokens.length) {

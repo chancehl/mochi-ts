@@ -2,7 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import glob from 'glob'
 
-import { TemplateService } from './templateService'
+import { TemplateService } from '../../services/templateService'
 
 // mock node internals
 jest.mock('fs')
@@ -40,12 +40,12 @@ describe('template service', () => {
 
     beforeEach(() => jest.resetAllMocks())
 
-    describe('parseMochiConfig', () => {
+    describe('parse', () => {
         test('returns null if the provided file path does not exist', () => {
             MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => null)
 
             expect(() => {
-                templateService.parseMochiConfig(MOCK_TEMPLATE_LOCATION)
+                templateService.parse(MOCK_TEMPLATE_LOCATION)
             }).toThrowError(/Could not read mochi template/)
         })
 
@@ -53,14 +53,14 @@ describe('template service', () => {
             MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => `I am not a valid mochi configuration`)
 
             expect(() => {
-                templateService.parseMochiConfig(MOCK_TEMPLATE_LOCATION) // this is invoked with an invalid file path, but since we're mocking the return value above, it doesn't matter
+                templateService.parse(MOCK_TEMPLATE_LOCATION) // this is invoked with an invalid file path, but since we're mocking the return value above, it doesn't matter
             }).toThrowError(/Could not find mochi configuration/)
         })
 
         test('correctly parses a mochi config', () => {
             MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG_FILE_CONTENTS)
 
-            const config = templateService.parseMochiConfig(MOCK_TEMPLATE_LOCATION)
+            const config = templateService.parse(MOCK_TEMPLATE_LOCATION)
 
             expect(config).toBeDefined()
             expect(config.fileName).toEqual(MOCK_FILE_NAME)
@@ -68,12 +68,12 @@ describe('template service', () => {
         })
     })
 
-    describe('scanForTemplate', () => {
+    describe('scan', () => {
         test(`returns null of the template can't be found`, () => {
             MOCK_OS.tmpdir = jest.fn().mockImplementationOnce(() => '/tmp')
             MOCK_FS.existsSync = jest.fn().mockImplementationOnce((_: string) => false)
 
-            expect(templateService.scanForTemplate(MOCK_TEMPLATE_NAME)).toEqual(null)
+            expect(templateService.scan(MOCK_TEMPLATE_NAME)).toEqual(null)
         })
 
         test('returns a tuple containing the config and the file location if found', () => {
@@ -81,10 +81,10 @@ describe('template service', () => {
             MOCK_FS.existsSync = jest.fn().mockImplementationOnce((_: string) => true)
             MOCK_GLOB.sync = jest.fn().mockImplementationOnce(() => [MOCK_MOCHI_TEMPLATE_FILE])
 
-            templateService.parseMochiConfig = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG)
+            templateService.parse = jest.fn().mockImplementationOnce(() => MOCK_VALID_MOCHI_CONFIG)
 
-            const result = templateService.scanForTemplate(MOCK_TEMPLATE_NAME)
-            
+            const result = templateService.scan(MOCK_TEMPLATE_NAME)
+
             // it is safe to use the non-null assertion operator (!) because we're mocking the return value above. we know it won't be null.
             const [config, loc] = result!
 
