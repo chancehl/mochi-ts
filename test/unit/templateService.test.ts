@@ -22,7 +22,7 @@ const MOCK_VALID_MOCHI_CONFIG_FILE_CONTENTS = `
     
     export const MyReactComponent = () => <div>Hello, world!</div>
 
-    \`\`\`json
+    \`\`\`mochi
     {
         "templateName": "${MOCK_TEMPLATE_NAME}",
         "fileName": "${MOCK_FILE_NAME}"
