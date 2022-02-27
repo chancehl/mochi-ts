@@ -6,7 +6,7 @@ import type { Arguments, CommandBuilder } from 'yargs'
 
 import { TemplateService } from '../services/templateService'
 import { prompt } from '../utils/prompt'
-import { HEXES, STRINGS } from '../constants'
+import { HEXES } from '../constants'
 import { reportExpectingInput, reportSuccess } from '../utils/stdout'
 
 export type CreateOptions = { template: string; destination?: string }
