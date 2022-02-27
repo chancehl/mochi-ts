@@ -7,6 +7,7 @@ import type { Arguments, CommandBuilder } from 'yargs'
 import { TemplateService } from '../services/templateService'
 import { prompt } from '../utils/prompt'
 import { HEXES, STRINGS } from '../constants'
+import { reportExpectingInput, reportSuccess } from '../utils/stdout'
 
 export type CreateOptions = { template: string; destination?: string }
 
@@ -57,7 +58,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
     // Only tell the user we're going to prompt them if we actually have something to prompt for
     if (aggregatedConfig.tokens.length) {
-        console.log(`${STRINGS.create.prompt}: ${aggregatedConfig.tokens.map((token) => `${chalk.hex(HEXES.mochi).bold(token)}`).join(', ')}\n`)
+        reportExpectingInput(aggregatedConfig)
     }
 
     // if we've made it here, we're good to greet the user and run mochi
@@ -96,13 +97,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         }
     }
 
-    console.log(
-        `\n`,
-        STRINGS.create.success,
-        STRINGS.create.filesCreated,
-        `${filesCreated.map((file) => `${chalk.hex(HEXES.mochi).bold(file)}`).join(', ')}.`,
-        STRINGS.create.thankYou,
-    )
+    reportSuccess(filesCreated)
 
     process.exit(0)
 }
