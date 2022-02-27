@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { spawn, execSync, exec } from 'child_process'
+import { execSync } from 'child_process'
 
 import { MOCHI_TEMPLATE_REGEX, STRINGS } from '../../src/constants'
 
