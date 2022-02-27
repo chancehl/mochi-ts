@@ -78,6 +78,35 @@ export class TemplateService {
     }
 
     /**
+     * Saves a mochi template to the local mochi repo
+     *
+     * @param templatePath The location of the template on disk
+     * @returns
+     */
+    public save = async (templatePath: string): Promise<string> => {
+        const contents = this.fs.readFileSync(templatePath, { encoding: 'utf-8' })
+
+        if (contents == null) {
+            throw new Error(`Could not read mochi template at ${templatePath}`)
+        }
+
+        const [rawMochiConfig] = contents?.match(MOCHI_CONFIG_REGEX) ?? []
+
+        if (rawMochiConfig == null) {
+            throw new Error(`Could not find mochi configuration in file ${templatePath}`)
+        }
+
+        const sanitizedRawMochiConfig = rawMochiConfig.replace(BACKTICKS_REGEX, '')
+        const mochiConfig = JSON.parse(sanitizedRawMochiConfig) as MochiConfiguration
+
+        const dest = path.join(this.os.tmpdir(), '.mochi', `${mochiConfig.templateName}.mochi.mdx`)
+
+        this.fs.writeFileSync(dest, contents)
+
+        return dest
+    }
+
+    /**
      * Crawls a Mochi configuration object scanning for nested templates and returns the aggregate
      *
      * @param config The inital config to scan

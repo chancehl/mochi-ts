@@ -15,9 +15,10 @@
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./dist && rm -rf ./test/tmp",
         "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
-        "test:unit": "jest --testPathPattern=test/unit",
-        "test:integ": "jest --testPathPattern=test/integ",
-        "test": "npm run test:unit && npm run test:integ && echo Tests passed 🧪",
+        "prepublishOnly": "npm run release",
+        "test:unit": "jest --testPathPattern=test/unit && echo Unit tests passed 🔬",
+        "test:integ": "jest --testPathPattern=test/integ && echo Integration tests passed 🤖",
+        "test": "npm run test:unit && npm run test:integ && echo All tests passed 🧪",
         "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍"
     },
     "keywords": [],

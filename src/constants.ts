@@ -38,4 +38,8 @@ export const STRINGS = {
         filesCreated: `The following files were created from this operation:`,
         thankYou: `Thank you for using ${chalk.hex(HEXES.mochi).bold(pkg.name)} 😍`,
     },
+    save: {
+        success: `🥳 ${chalk.hex(HEXES.mochi)('Success!')}`,
+        filesCreated: `${chalk.hex(HEXES.mochi).bold(pkg.name)} saved your template to`,
+    },
 }
