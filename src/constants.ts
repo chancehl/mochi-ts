@@ -1,3 +1,6 @@
+import chalk from 'chalk'
+import pkg from '../package.json'
+
 /**
  * This regex is used to parse the file contents from a .mdx file
  */
@@ -24,3 +27,15 @@ export const HEXES = {
  * This glob represents what we expect to be living in tmp dir
  */
 export const MOCHI_TEMPLATE_FILE_GLOB = '**/*.mochi.mdx'
+
+/**
+ * The strings used within the application
+ */
+export const STRINGS = {
+    create: {
+        prompt: `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s)`,
+        success: `🥳 ${chalk.hex(HEXES.mochi)('Success!')}`,
+        filesCreated: `The following files were created from this operation:`,
+        thankYou: `Thank you for using ${chalk.hex(HEXES.mochi).bold(pkg.name)} 😍`,
+    },
+}

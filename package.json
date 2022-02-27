@@ -15,12 +15,10 @@
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./dist && rm -rf ./test/tmp",
         "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
-        "install:local": "npm run uninstall:local && npm run release && npm install -g .",
-        "test:unit": "jest --testPathPattern=src/test/unit",
-        "test:integ": "jest --testPathPattern=src/test/integ",
+        "test:unit": "jest --testPathPattern=test/unit",
+        "test:integ": "jest --testPathPattern=test/integ",
         "test": "npm run test:unit && npm run test:integ && echo Tests passed 🧪",
-        "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍",
-        "uninstall:local": "npm uninstall -g mochi-cli"
+        "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍"
     },
     "keywords": [],
     "author": "Chance Linz <clinz.dev@gmail.com>",

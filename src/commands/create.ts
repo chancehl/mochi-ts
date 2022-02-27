@@ -1,13 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
-import pkg from '../../package.json'
 
 import type { Arguments, CommandBuilder } from 'yargs'
 
 import { TemplateService } from '../services/templateService'
 import { prompt } from '../utils/prompt'
-import { HEXES } from '../constants'
+import { HEXES, STRINGS } from '../constants'
 
 export type CreateOptions = { template: string; destination?: string }
 
@@ -58,11 +57,7 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
 
     // Only tell the user we're going to prompt them if we actually have something to prompt for
     if (aggregatedConfig.tokens.length) {
-        console.log(
-            `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s): ${aggregatedConfig.tokens
-                .map((token) => `${chalk.hex(HEXES.mochi).bold(token)}`)
-                .join(', ')}\n`,
-        )
+        console.log(`${STRINGS.create.prompt}: ${aggregatedConfig.tokens.map((token) => `${chalk.hex(HEXES.mochi).bold(token)}`).join(', ')}\n`)
     }
 
     // if we've made it here, we're good to greet the user and run mochi
@@ -101,8 +96,13 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         }
     }
 
-    console.log(`\n🥳 ${chalk.hex(HEXES.mochi)('Success!')} The following files were created from this operation:\n`)
-    console.log(`${filesCreated.map((file) => `* ${chalk.hex(HEXES.mochi).bold(file)}`).join('\n')}`)
-    console.log(`\nThank you for using ${chalk.hex(HEXES.mochi).bold(pkg.name)} 😍`)
+    console.log(
+        `\n`,
+        STRINGS.create.success,
+        STRINGS.create.filesCreated,
+        `${filesCreated.map((file) => `${chalk.hex(HEXES.mochi).bold(file)}`).join(', ')}.`,
+        STRINGS.create.thankYou,
+    )
+
     process.exit(0)
 }
