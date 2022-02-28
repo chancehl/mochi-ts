@@ -9,7 +9,7 @@ export const generateTableData = (configs: MochiConfiguration[]): Array<Array<st
     const body = configs.map(({ templateName, destination = 'N/A', include = [] }) => [
         chalk.bold(templateName),
         destination,
-        include?.join(', ') ?? 'None',
+        include.length ? include?.join(', ') : 'None',
     ])
 
     return [headers, ...body]

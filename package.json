@@ -1,14 +1,14 @@
 {
     "name": "mochi-cli",
-    "version": "2.0.3",
+    "version": "2.0.8",
     "description": "A simple scaffolding tool",
-    "main": "./dist/src/cli.js",
+    "main": "./src/cli.js",
     "files": [
         "dist"
     ],
     "type": "commonjs",
     "bin": {
-        "mochi": "./dist/src/cli.js"
+        "mochi": "./src/cli.js"
     },
     "scripts": {
         "build": "tsc",
@@ -16,10 +16,10 @@
         "clean": "rm -rf ./dist && rm -rf ./tmp",
         "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
         "prepublishOnly": "npm run release",
-        "test:unit": "jest --testPathPattern=src/test/unit && echo Unit tests passed 🔬",
-        "test:integ": "jest --testPathPattern=src/test/integ && echo Integration tests passed 🤖",
+        "test:unit": "jest --testPathPattern=test/unit && echo Unit tests passed 🔬",
+        "test:integ": "jest --testPathPattern=test/integ && echo Integration tests passed 🤖",
         "test": "npm run test:unit && npm run test:integ && echo All tests passed 🧪",
-        "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍"
+        "release": "npm run clean && npm run build && npm run test && echo Build Succeeded 👍"
     },
     "keywords": [],
     "author": "Chance Linz <clinz.dev@gmail.com>",
