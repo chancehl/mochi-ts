@@ -2,7 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import glob from 'glob'
 
-import { TemplateService } from '../../src/services/templateService'
+import { TemplateService } from '../../services/templateService'
 
 // mock node internals
 jest.mock('fs')

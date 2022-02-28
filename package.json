@@ -1,6 +1,6 @@
 {
     "name": "mochi-cli",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "description": "A simple scaffolding tool",
     "main": "./dist/src/cli.js",
     "files": [
@@ -13,11 +13,11 @@
     "scripts": {
         "build": "tsc",
         "build:watch": "tsc --watch",
-        "clean": "rm -rf ./dist && rm -rf ./test/tmp",
+        "clean": "rm -rf ./dist && rm -rf ./tmp",
         "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
         "prepublishOnly": "npm run release",
-        "test:unit": "jest --testPathPattern=test/unit && echo Unit tests passed 🔬",
-        "test:integ": "jest --testPathPattern=test/integ && echo Integration tests passed 🤖",
+        "test:unit": "jest --testPathPattern=src/test/unit && echo Unit tests passed 🔬",
+        "test:integ": "jest --testPathPattern=src/test/integ && echo Integration tests passed 🤖",
         "test": "npm run test:unit && npm run test:integ && echo All tests passed 🧪",
         "release": "npm run clean && npm run copy:templates && npm run build && npm run test && echo Build Succeeded 👍"
     },
