@@ -93,6 +93,8 @@ const COMPONENT_NAME = () => {
     )
 }
 
+export default COMPONENT_NAME
+
 ```mochi
 {
     "templateName": "react-component/ts",
@@ -102,7 +104,22 @@ const COMPONENT_NAME = () => {
 ```
 ````
 
-And you provided the value "Calendar" (we'll circle back to how you give Mochi values in a second), your output would be everything in the template file (`react-component.mochi.mdx`) _minus_ the mochi definition.
+And you provided the value "Calendar" (we'll circle back to how you give Mochi values in a second), your output would be everything in the template file (`react-component.mochi.mdx`) _minus_ the mochi definition, like so:
+
+```
+# Calendar.tsx
+import React from 'react';
+
+const Calendar = () => {
+    return (
+        <>
+            Hello world, I am Calendar!
+        <>
+    )
+}
+
+export default Calendar
+```
 
 # Commands
 
