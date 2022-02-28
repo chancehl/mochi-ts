@@ -14,7 +14,7 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "clean": "rm -rf ./dist && rm -rf ./tmp",
-        "copy:templates": "cp -r ./.mochi/ /tmp/.mochi/",
+        "copy:templates": "cp -r ./test/templates/. /tmp/.mochi/",
         "prepublishOnly": "npm run release",
         "test:unit": "jest --testPathPattern=test/unit && echo Unit tests passed 🔬",
         "test:integ": "jest --testPathPattern=test/integ && echo Integration tests passed 🤖",
