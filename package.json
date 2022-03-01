@@ -1,6 +1,6 @@
 {
     "name": "mochi-cli",
-    "version": "2.0.11",
+    "version": "2.0.12",
     "description": "A simple scaffolding tool",
     "main": "./src/cli.js",
     "files": [

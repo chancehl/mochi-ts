@@ -59,7 +59,7 @@ An example Mochi configuration may look like this:
     "templateName": "react-component/ts",
 
     # The file output name (note: COMPONENT_NAME is included in the tokens array, so it will be replaced as well!)
-    "fileName": "[COMPONENT_NAME].tsx".
+    "fileName": "COMPONENT_NAME.tsx".
 
     # The folder to place the output file(s) within
     "destination": "./src",
@@ -99,7 +99,7 @@ export default COMPONENT_NAME
 {
     "templateName": "react-component/ts",
     "tokens": ["COMPONENT_NAME"],
-    "fileName": "[COMPONENT_NAME].tsx"
+    "fileName": "COMPONENT_NAME.tsx"
 }
 ```
 ````
@@ -155,10 +155,9 @@ Example:
 ```
 ~/workshop/mochi/cli$ mochi-cli create "react-component" --destination ./tmp
 
-Mochi will now prompt you to provide values for the following tokens found in your .mochi.mdx file(s): COMPONENT_NAME, TYPE_NAME
+Mochi will now prompt you to provide values for the following tokens found in your .mochi.mdx file(s): COMPONENT_NAME
 
 COMPONENT_NAME => Calendar
-TYPE_NAME => CalendarView
 
 🥳 Success! Thank you for using mochi-cli 😍
 ╔═══════════════════════╤═══════════════════════════╤═══════════════════════╗
@@ -166,7 +165,7 @@ TYPE_NAME => CalendarView
 ╟───────────────────────┼───────────────────────────┼───────────────────────╢
 ║ react-component       │ tmp/Calendar.tsx          │ react-component-types ║
 ╟───────────────────────┼───────────────────────────┼───────────────────────╢
-║ react-component-types │ tmp/CalendarView.types.ts │ react-component       ║
+║ react-component-types │ tmp/Calendar.types.ts     │ react-component       ║
 ╚═══════════════════════╧═══════════════════════════╧═══════════════════════╝
 ```
 
