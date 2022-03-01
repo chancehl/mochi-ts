@@ -82,8 +82,6 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
             // replace contents
             config.template = config.template.replaceAll(token, value)
 
-            console.log({ token, config, value })
-
             // if file name contains this key, update the fileName
             if (config.fileName.includes(token)) {
                 config.fileName = config.fileName.replaceAll(token, value)
