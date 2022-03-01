@@ -150,13 +150,14 @@ export class TemplateService {
      */
     private merge = (config: MochiConfiguration, aggregateConfig: AggregateMochiConfiguration) => {
         const tokens = config.tokens ?? []
+        const filteredTokens = tokens.filter((token) => !aggregateConfig.tokens.includes(token))
 
         return {
             ...aggregateConfig,
             compositeId: aggregateConfig.compositeId.length ? `${aggregateConfig.compositeId}:${config.templateName}` : config.templateName,
             configs: [...aggregateConfig.configs, config],
-            tokens: [...aggregateConfig.tokens, ...tokens],
-            map: { ...aggregateConfig.map, [config.templateName]: [...tokens] },
+            tokens: [...aggregateConfig.tokens, ...filteredTokens],
+            map: { ...aggregateConfig.map, [config.templateName]: [...filteredTokens] },
         }
     }
 }

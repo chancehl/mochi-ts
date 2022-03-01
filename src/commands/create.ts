@@ -61,6 +61,8 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         reportCreateExpectingInput(aggregatedConfig)
     }
 
+    let tokenValueMap: Record<string, string> = {}
+
     // if we've made it here, we're good to greet the user and run mochi
     for (const config of aggregatedConfig.configs) {
         // if we've got this far and we don't have a location, we're in an error state
@@ -69,14 +71,22 @@ export const handler = async (argv: Arguments<CreateOptions>): Promise<void> => 
         }
 
         for (const token of config?.tokens ?? []) {
-            const resp = await prompt(`${chalk.hex(HEXES.mochi)(token)} => `)
+            let value = tokenValueMap[token]
+
+            if (tokenValueMap[token] == null) {
+                value = await prompt(`${chalk.hex(HEXES.mochi)(token)} => `)
+
+                tokenValueMap[token] = value ?? 'MISSING_VALUE'
+            }
 
             // replace contents
-            config.template = config.template.replaceAll(token, resp)
+            config.template = config.template.replaceAll(token, value)
+
+            console.log({ token, config, value })
 
             // if file name contains this key, update the fileName
-            if (config.fileName.includes(token) && resp.length) {
-                config.fileName = config.fileName.replaceAll(`[${token}]`, resp)
+            if (config.fileName.includes(token)) {
+                config.fileName = config.fileName.replaceAll(token, value)
             }
         }
 
