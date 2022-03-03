@@ -7,7 +7,7 @@ describe('integration', () => {
     describe('create', () => {
         test('creates files', () => {
             // invoke mochi
-            execSync('node dist/src/cli.js create test/templates/prettierrc.mochi.mdx --destination=./tmp/')
+            execSync('node bin/src/cli.js create test/templates/prettierrc.mochi.mdx --destination=./tmp/')
 
             // assert
             expect(fs.existsSync('./tmp/.prettierrc')).toEqual(true)
@@ -20,7 +20,7 @@ describe('integration', () => {
 
         test('informs user of success', () => {
             // invoke mochi
-            const result = execSync('node dist/src/cli.js create test/templates/prettierrc.mochi.mdx --destination=./tmp/')
+            const result = execSync('node bin/src/cli.js create test/templates/prettierrc.mochi.mdx --destination=./tmp/')
 
             // assert
 
@@ -37,7 +37,7 @@ describe('integration', () => {
     describe('save', () => {
         test('moves template to tmp dir', () => {
             // invoke mochi
-            execSync('node dist/src/cli.js save test/templates/prettierrc.mochi.mdx')
+            execSync('node bin/src/cli.js save test/templates/prettierrc.mochi.mdx')
 
             // assert
             expect(fs.existsSync('/tmp/.mochi/prettierrc.mochi.mdx')).toEqual(true)

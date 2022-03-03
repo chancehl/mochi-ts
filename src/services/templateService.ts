@@ -99,7 +99,14 @@ export class TemplateService {
         const sanitizedRawMochiConfig = rawMochiConfig.replace(BACKTICKS_REGEX, '')
         const mochiConfig = JSON.parse(sanitizedRawMochiConfig) as MochiConfiguration
 
-        const dest = path.join(this.os.tmpdir(), '.mochi', `${mochiConfig.templateName}.mochi.mdx`)
+        // if our tmpDir does not exist, let's create it
+        const tmpMochiDir = path.join(this.os.tmpdir(), '.mochi')
+
+        if (!this.fs.existsSync(tmpMochiDir)) {
+            this.fs.mkdirSync(tmpMochiDir)
+        }
+
+        const dest = path.join(tmpMochiDir, `${mochiConfig.templateName}.mochi.mdx`)
 
         this.fs.writeFileSync(dest, contents)
 
