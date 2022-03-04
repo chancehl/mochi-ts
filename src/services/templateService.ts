@@ -142,7 +142,7 @@ export class TemplateService {
 
             const [childConfiguration, location] = template
 
-            return this.aggregate({ ...childConfiguration, location }, aggregateConfig)
+            aggregateConfig = this.aggregate({ ...childConfiguration, location }, aggregateConfig)
         }
 
         return aggregateConfig
