@@ -1,4 +1,5 @@
 import fs from 'fs'
+import os from 'os'
 import { execSync } from 'child_process'
 
 import { MOCHI_TEMPLATE_REGEX, STRINGS } from '../../src/constants'
@@ -40,7 +41,7 @@ describe('integration', () => {
             execSync('node dist/src/cli.js save test/templates/prettierrc.mochi.mdx')
 
             // assert
-            expect(fs.existsSync('/tmp/.mochi/prettierrc.mochi.mdx')).toEqual(true)
+            expect(fs.existsSync(os.tmpdir() + '/.mochi/prettierrc.mochi.mdx')).toEqual(true)
         })
     })
 })
