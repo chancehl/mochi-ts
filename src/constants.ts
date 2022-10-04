@@ -39,12 +39,12 @@ export const MOCHI_TEMPLATE_FILE_GLOB = '**/*.mochi.mdx'
 export const STRINGS = {
     create: {
         prompt: `Mochi will now prompt you to provide values for the following tokens found in your ${chalk.bold('.mochi.mdx')} file(s)`,
-        success: `🥳 ${chalk.hex(HEXES.mochi)('Success!')}`,
+        success: `${chalk.hex(HEXES.mochi)('Success!')}`,
         filesCreated: `The following files were created from this operation:`,
-        thankYou: `Thank you for using ${chalk.hex(HEXES.mochi).bold(pkg.name)} 😍`,
+        thankYou: `Thank you for using ${chalk.hex(HEXES.mochi).bold(pkg.name)}!`,
     },
     save: {
-        success: `🥳 ${chalk.hex(HEXES.mochi)('Success!')}`,
+        success: `${chalk.hex(HEXES.mochi)('Success!')}`,
         filesCreated: `${chalk.hex(HEXES.mochi).bold(pkg.name)} saved your template to`,
     },
 }
