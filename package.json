@@ -1,6 +1,6 @@
 {
     "name": "mochi-cli",
-    "version": "2.0.15",
+    "version": "2.0.16",
     "description": "A simple scaffolding tool",
     "main": "dist/src/cli.js",
     "files": [
@@ -24,8 +24,8 @@
     "license": "ISC",
     "devDependencies": {
         "@types/glob": "^7.2.0",
-        "@types/jest": "^27.4.0",
-        "@types/node": "^17.0.17",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^17.0.45",
         "@types/yargs": "^17.0.8",
         "jest": "^27.5.1",
         "prettier": "^2.5.1",

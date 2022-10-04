@@ -17,6 +17,11 @@ export const MOCHI_CONFIG_REGEX = /`{3}mochi(.|\n)+`{3}/gm
 export const BACKTICKS_REGEX = /`{3}(mochi)?/gm
 
 /**
+ * This regex matches non-alphanumeric characters
+ */
+export const INVALID_TEMPLATE_NAME_CHARS_REGEX = /[^\w_]/gm
+
+/**
  * Color hexes for chalk
  */
 export const HEXES = {

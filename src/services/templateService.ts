@@ -5,7 +5,7 @@ import { default as path } from 'path'
 
 import type { AggregateMochiConfiguration, MochiConfiguration, TemplateScanResults } from '../types/mochi'
 
-import { BACKTICKS_REGEX, MOCHI_CONFIG_REGEX, MOCHI_TEMPLATE_REGEX, MOCHI_TEMPLATE_FILE_GLOB } from '../constants'
+import { BACKTICKS_REGEX, MOCHI_CONFIG_REGEX, MOCHI_TEMPLATE_REGEX, MOCHI_TEMPLATE_FILE_GLOB, INVALID_TEMPLATE_NAME_CHARS_REGEX } from '../constants'
 
 export class TemplateService {
     private fs: typeof fileSystem
@@ -98,6 +98,11 @@ export class TemplateService {
 
         const sanitizedRawMochiConfig = rawMochiConfig.replace(BACKTICKS_REGEX, '')
         const mochiConfig = JSON.parse(sanitizedRawMochiConfig) as MochiConfiguration
+
+        // throw if we have non-alphanumeric characters
+        if (INVALID_TEMPLATE_NAME_CHARS_REGEX.test(mochiConfig.templateName)) {
+            throw new Error(`Template name must only contain alphanumeric characters: ${mochiConfig.templateName} (at ${templatePath})`)
+        }
 
         // if our tmpDir does not exist, let's create it
         const tmpMochiDir = path.join(this.os.tmpdir(), '.mochi')

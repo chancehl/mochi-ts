@@ -16,6 +16,7 @@ const MOCK_GLOB = glob as jest.Mocked<typeof glob>
 const MOCK_MOCHI_TEMPLATE_FILE = 'ReactComponent.mochi.mdx'
 const MOCK_TEMPLATE_LOCATION = '/test'
 const MOCK_TEMPLATE_NAME = 'ReactComponent'
+const MOCK_INVALID_TEMPLATE_NAME = 'test/invalid-template'
 const MOCK_FILE_NAME = 'test-file.js'
 const MOCK_VALID_MOCHI_CONFIG_FILE_CONTENTS = `
     import React from 'react';
@@ -25,6 +26,16 @@ const MOCK_VALID_MOCHI_CONFIG_FILE_CONTENTS = `
     \`\`\`mochi
     {
         "templateName": "${MOCK_TEMPLATE_NAME}",
+        "fileName": "${MOCK_FILE_NAME}"
+    }
+    \`\`\`
+`
+const MOCK_INVALID_TEMPLATE_NAME_MOCHI_FILE_CONTENTS = `
+    module.exports = { /* no-op */ };
+
+    \`\`\`mochi
+    {
+        "templateName": "${MOCK_INVALID_TEMPLATE_NAME}",
         "fileName": "${MOCK_FILE_NAME}"
     }
     \`\`\`
@@ -55,6 +66,14 @@ describe('template service', () => {
             expect(async () => {
                 await templateService.save(MOCK_TEMPLATE_LOCATION) // this is invoked with an invalid file path, but since we're mocking the return value above, it doesn't matter
             }).rejects.toThrowError(/Could not find mochi configuration/)
+        })
+
+        test('throws if the provided file contains an invalid template name', () => {
+            MOCK_FS.readFileSync = jest.fn().mockImplementationOnce(() => MOCK_INVALID_TEMPLATE_NAME_MOCHI_FILE_CONTENTS)
+
+            expect(async () => {
+                await templateService.save(MOCK_TEMPLATE_LOCATION) // this is invoked with an invalid file path, but since we're mocking the return value above, it doesn't matter
+            }).rejects.toThrowError(new RegExp(`Template name must only contain alphanumeric characters: ${MOCK_INVALID_TEMPLATE_NAME}`))
         })
     })
 
